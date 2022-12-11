@@ -1,17 +1,33 @@
+#spring:
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url : jdbc:h2:~/test;
+#    username: sa
+#    password:
+#  jpa:
+#    generate-ddl: true
+#    open-in-view: false
+#    show-sql: true
+#mybatis:
+#  type-aliases-package: org.prgrms.japexample.lecture.repository.domain # 쿼리 결과 result set이 자동으로 매핑될 자바객체가 있는 장소
+#  configuration:
+#    map-underscore-to-camel-case: true # 언더스코어를 카멜케이스로 바꾸는걸 true  로 하는 것
+#    default-fetch-size: 100 # 한번에 최대 100개씩 가져오겠다.
+#    default-statement-timeout: 30 # rdb와 실제 통신하는 statement의 타입아웃을 default로 30초로 가져가겠다.
+#  mapper-locations: classpath:mapper/*.xml #쿼리를 어디에 관리할건지 알려준다.
+
 spring:
-  datasource:
-    driver-class-name: org.h2.Driver
-    url : jdbc:h2:~/test;
-    username: sa
-    password:
+  h2:
+    console:
+      enabled: true
   jpa:
     generate-ddl: true
-    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    database: H2
     show-sql: true
-mybatis:
-  type-aliases-package: org.prgrms.japexample.lecture.repository.domain # 쿼리 결과 result set이 자동으로 매핑될 자바객체가 있는 장소
-  configuration:
-    map-underscore-to-camel-case: true # 언더스코어를 카멜케이스로 바꾸는걸 true  로 하는 것
-    default-fetch-size: 100 # 한번에 최대 100개씩 가져오겠다.
-    default-statement-timeout: 30 # rdb와 실제 통신하는 statement의 타입아웃을 default로 30초로 가져가겠다.
-  mapper-locations: classpath:mapper/*.xml #쿼리를 어디에 관리할건지 알려준다.
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.MySQL5Dialect"
+        query.in_clause_parameter_padding: true

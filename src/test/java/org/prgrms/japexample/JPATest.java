@@ -30,7 +30,7 @@ public class JPATest {
         customer.setId(1L);
         customer.setFirstName("honggu");
         customer.setLastName("kang");
-        customer.setAge(23);
+//        customer.setAge(23);
 
         //when
         repository.save(customer);
@@ -38,7 +38,7 @@ public class JPATest {
         //then
         var entity = repository.findById(1L).get();
         log.info("{} {}",entity.getFirstName(),entity.getLastName());
-        log.info("{}",customer.getAge());
+//        log.info("{}",customer.getAge());
     }
 
     @Test

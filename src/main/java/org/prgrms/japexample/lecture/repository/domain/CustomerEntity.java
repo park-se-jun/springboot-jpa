@@ -12,7 +12,7 @@ public class CustomerEntity {
     private long id;
     private String firstName;
     private String lastName;
-    private int age;
+
     public long getId() {
         return id;
     }
@@ -37,11 +37,4 @@ public class CustomerEntity {
         this.lastName = lastName;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 }
