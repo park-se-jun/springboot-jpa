@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.prgrms.japexample.lecture.repository.CustomerRepository;
+import org.prgrms.japexample.lecture.repository.domain.CustomerRepository;
 import org.prgrms.japexample.lecture.repository.domain.CustomerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
