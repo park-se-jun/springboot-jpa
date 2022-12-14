@@ -42,7 +42,7 @@ public class DataSourceConfig {
                                                                        JpaProperties jpaProperties) {
         LocalContainerEntityManagerFactoryBean  em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("org.prgrms.japexample.lecture.repository.domain");
+        em.setPackagesToScan("org.prgrms.japexample.lecture.repository.domain","org.prgrms.japexample.lecture.domain");
         em.setJpaVendorAdapter(jpaVendorAdapter);
         Properties properties = new Properties();
         properties.putAll(jpaProperties.getProperties());

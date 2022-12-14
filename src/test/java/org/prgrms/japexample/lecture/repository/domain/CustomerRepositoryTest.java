@@ -2,8 +2,6 @@ package org.prgrms.japexample.lecture.repository.domain;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.prgrms.japexample.lecture.repository.domain.CustomerEntity;
-import org.prgrms.japexample.lecture.repository.domain.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -28,5 +26,4 @@ class CustomerRepositoryTest {
         //then
         var entity = repository.findById(1L).get();
         log.info("{} {}",entity.getFirstName(),entity.getLastName());
-    }
-}
+    }}
