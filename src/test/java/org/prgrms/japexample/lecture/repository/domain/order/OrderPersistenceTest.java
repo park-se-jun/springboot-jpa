@@ -8,11 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.prgrms.japexample.lecture.domain.order.Member;
 import org.prgrms.japexample.lecture.domain.order.Order;
-import org.prgrms.japexample.lecture.domain.order.OrderStatus;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static org.prgrms.japexample.lecture.domain.order.OrderStatus.OPENED;
+
 @Slf4j
 @SpringBootTest
 public class OrderPersistenceTest {
@@ -57,7 +59,7 @@ public class OrderPersistenceTest {
         Order order = new Order();
         order.setUuid(UUID.randomUUID().toString());
         order.setOrderDatetime(LocalDateTime.now());
-        order.setOrderStatus(OrderStatus.OPENED);
+        order.setOrderStatus(OPENED);
         order.setMemo("부재시 전화주세요.");
         order.setMemberId(memberEntity.getId()); // 외래키를 직접 지정
 
@@ -69,5 +71,39 @@ public class OrderPersistenceTest {
         Member orderMemberEntity = entityManager.find(Member.class, orderEntity.getMemberId());
         // orderEntity.getMember() // 객체중심 설계라면 객체그래프 탐색을 해야하지 않을까?
         log.info("nick : {}", orderMemberEntity.getNickName());
+    }
+
+    @Test
+    void 연관관계_테스트(){
+        EntityManager entityManager = emf.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        Member member = new Member();
+        member.setName("세준박");
+        member.setNickName("paak");
+        member.setAddress("부천시");
+        member.setAge(24);
+
+        entityManager.persist(member);
+
+        Order order = new Order();
+        order.setUuid(UUID.randomUUID().toString());
+        order.setOrderStatus(OPENED);
+        order.setMemo("부제시 연락 주세요.");
+        order.setMember(member);
+
+        entityManager.persist(order);
+        transaction.commit();
+
+        entityManager.clear();
+        var entity = entityManager.find(Order.class, order.getUuid());
+
+        log.info("{}", entity.getMember().getName());
+
+        log.info("{}",entity.getMember().getOrders().size());
+        log.info("{}",order.getMember().getOrders());//잘 가져오지 못한다. (영속성 컨텍스트에서 setOrders를 안해주기 때문에
+        //그래서 일반적으로 연관관계 편의 메소드를 만들어서 잘 설정되도록 한다.
     }
 }
