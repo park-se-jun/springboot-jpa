@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Objects;
+
 @Getter
 @Setter
 @Entity
@@ -17,9 +20,23 @@ public class OrderItem {
 
     private int quantity;
 
-    //fk
-    @Column(name="order_id")
-    private String OrderId;
-    @Column(name="item_id")
-    private Long itemId;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private  Order order;
+
+    @OneToMany(mappedBy = "orderItem")
+    private List<Item> items;
+
+    public void setOrder(Order order){
+        if(Objects.nonNull(this.order)){
+            this.order.getOrderItems().remove(this);
+        }
+        this.order = order;
+        order.getOrderItems().add(this);
+    }
+
+    public void addItem(Item item){
+        item.setOrderItem(this);
+    }
 }

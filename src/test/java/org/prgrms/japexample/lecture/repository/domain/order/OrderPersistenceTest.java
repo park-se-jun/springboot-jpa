@@ -5,9 +5,11 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceUnit;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.prgrms.japexample.lecture.domain.order.Member;
 import org.prgrms.japexample.lecture.domain.order.Order;
+import org.prgrms.japexample.lecture.domain.order.OrderItem;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -61,16 +63,16 @@ public class OrderPersistenceTest {
         order.setOrderDatetime(LocalDateTime.now());
         order.setOrderStatus(OPENED);
         order.setMemo("부재시 전화주세요.");
-        order.setMemberId(memberEntity.getId()); // 외래키를 직접 지정
+//        order.setMemberId(memberEntity.getId()); // 외래키를 직접 지정
 
         entityManager.persist(order);
         transaction.commit();
 
         Order orderEntity = entityManager.find(Order.class, order.getUuid());
         // FK 를 이용해 회원 다시 조회
-        Member orderMemberEntity = entityManager.find(Member.class, orderEntity.getMemberId());
-        // orderEntity.getMember() // 객체중심 설계라면 객체그래프 탐색을 해야하지 않을까?
-        log.info("nick : {}", orderMemberEntity.getNickName());
+//        Member orderMemberEntity = entityManager.find(Member.class, orderEntity.getMemberId());
+//        // orderEntity.getMember() // 객체중심 설계라면 객체그래프 탐색을 해야하지 않을까?
+//        log.info("nick : {}", orderMemberEntity.getNickName());
     }
 
     @Test
@@ -105,5 +107,34 @@ public class OrderPersistenceTest {
         log.info("{}",entity.getMember().getOrders().size());
         log.info("{}",order.getMember().getOrders());//잘 가져오지 못한다. (영속성 컨텍스트에서 setOrders를 안해주기 때문에
         //그래서 일반적으로 연관관계 편의 메소드를 만들어서 잘 설정되도록 한다.
+    }
+
+    @Test
+    void Order_OrderItem_연관관계테스트(){
+        EntityManager entityManager = emf.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        transaction.begin();
+
+        Order order = new Order();
+        order.setUuid(UUID.randomUUID().toString());
+        order.setOrderStatus(OPENED);
+        order.setMemo("부제시 연락 주세요.");
+
+        entityManager.persist(order);
+
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+
+        entityManager.persist(orderItem);
+
+        transaction.commit();
+
+        entityManager.clear();
+
+        var entity = entityManager.find(OrderItem.class, orderItem.getId());
+
+        Assertions.assertThat(entity.getOrder().getOrderItems().size()).isEqualTo(1);
+
     }
 }

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -22,13 +24,13 @@ public class Order {
     @Column(name = "order_datetime",columnDefinition = "TIMESTAMP")
     private LocalDateTime orderDatetime;
 
-    // member_fk
-    @Column(name = "member_id",insertable = false,updatable = false)
-    private Long memberId;
 
     @ManyToOne
     @JoinColumn(name = "member_id",referencedColumnName = "id")
     private Member member;
+
+    @OneToMany
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public void setMember(Member member){
         if (Objects.nonNull(this.member)){
@@ -37,5 +39,9 @@ public class Order {
 
         this.member = member;
         member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem){
+        orderItem.setOrder(this);
     }
 }
