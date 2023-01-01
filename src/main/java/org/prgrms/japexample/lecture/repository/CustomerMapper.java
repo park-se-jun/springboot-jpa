@@ -11,5 +11,4 @@ public interface CustomerMapper {
     void update(Customer customer);
     Customer findById(long id);
     List<Customer> findAll();
-
 }
