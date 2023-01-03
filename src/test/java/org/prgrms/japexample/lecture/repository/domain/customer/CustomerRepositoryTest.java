@@ -1,7 +1,9 @@
-package org.prgrms.japexample.lecture.repository.domain;
+package org.prgrms.japexample.lecture.repository.domain.customer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.prgrms.japexample.lecture.domain.customer.CustomerEntity;
+import org.prgrms.japexample.lecture.domain.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
